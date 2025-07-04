@@ -1,0 +1,78 @@
+# Node modules
+node_modules/
+dist/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+
+# Prisma
+prisma/dev.db
+prisma/*.db-journal
+prisma/migrations/*/README.md
+prisma/generated/
+
+# Prettier
+.prettiercache
+
+# ESLint
+.eslintcache
+
+# VSCode settings (optional)
+.vscode/
+
+# Coverage reports
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+
+# Database dump or backup
+*.sql
+*.sqlite
+
+# Local uploads or cache
+uploads/
+tmp/
+.cache/
+
+# Cloudinary-related
+# (Assuming you store signed URLs or secrets in config files)
+cloudinary.config.js
+cloudinary.config.ts
+cloudinary-secrets.json
+
+# GraphQL
+*.graphqls
+*.graphql.d.ts
+__generated__/
+
+# Ignore next.js build if accidentally included
+.next/
+out/
+
+# Optional: OS-specific
+*.swp

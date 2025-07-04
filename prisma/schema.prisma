@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String
+  password  String
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  posts     Post[]
+  comments  Comment[]
+  Likes     Like[]
+  Views     Views[]
+  Followers Follower[] @relation("followers")
+  Following Follower[] @relation("following")
+
+  @@map("users")
+}
+
+model Post {
+  id              Int       @id @default(autoincrement())
+  title           String
+  content         String?
+  mediaUrl        String?
+  commentsEnabled Boolean?  @default(true)
+  published       Boolean?  @default(true)
+  scheduleAt      DateTime?
+  createdAt       DateTime? @default(now()) @map("created_at")
+  updateAt        DateTime? @updatedAt @map("updated_at")
+  authorId        Int       @map("author_id")
+  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments        Comment[]
+  Likes           Like[]
+  Views           Views[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt  DateTime @updatedAt @map("updated_at")
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+
+  @@map("comments")
+}
+
+model Like {
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int
+  post     Post @relation(fields: [postId], references: [id])
+  postId   Int
+
+  @@id([postId, authorId])
+  @@map("likes")
+}
+
+model Follower {
+  followerId  Int
+  follower    User @relation("following", fields: [followerId], references: [id])
+  followingId Int
+  following   User @relation("followers", fields: [followingId], references: [id])
+
+  @@id([followerId, followingId])
+  @@map("followers")
+}
+
+model Views {
+  id        Int      @id @default(autoincrement())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  createdAt DateTime @default(now())
+
+  @@map("views")
+}

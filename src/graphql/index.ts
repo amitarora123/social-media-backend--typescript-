@@ -69,6 +69,6 @@ export const startGraphqlServer = async (port: number) => {
     }),
   );
   app.listen(port, () => {
-    console.log(`Server ready at port: ${port}`);
+    console.log(`Server ready at: http://${process.env.HOST || 'localhost'}:${port}`);
   });
 };

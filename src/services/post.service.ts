@@ -19,7 +19,7 @@ export class PostService {
     if (!user) throw new Error('Invalid token | UNAUTHORIZED REQUEST');
 
     const localPath = await uploadToLocal(file);
-    let mediaUrl = null;
+    let mediaUrl: any = null;
     if (localPath) {
       mediaUrl = await uploadOnCloudinary(localPath);
       console.log(mediaUrl);

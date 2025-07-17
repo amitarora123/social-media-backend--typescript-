@@ -2,7 +2,7 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@as-integrations/express5';
 import cors from 'cors';
 import express, { Request } from 'express';
-import { MyContext, User } from '../types';
+import { MyContext, MyPayload, User } from '../types';
 import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 import { userSchema } from './schemas/user.schema';
 import { userResolver } from './resolvers/user.resolver';
@@ -53,24 +53,22 @@ export const startGraphqlServer = async (port: number) => {
       context: async ({ req }) => {
         const token = req.headers['authorization'];
 
-        let user = null;
+        let user: User | null = null;
         if (token) {
           try {
-            user = verifyToken(token);
+            user = verifyToken(token) as MyPayload;
           } catch (error) {
             console.log('Invalid token');
           }
         }
         return {
           prisma: prisma,
-          user: user as User,
+          user: user ? (user as User) : null,
         };
       },
     }),
   );
   app.listen(port, '0.0.0.0', () => {
-    console.log(
-      `Server ready at:${port}`,
-    );
+    console.log(`Server ready at:${port}`);
   });
 };

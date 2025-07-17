@@ -4,6 +4,14 @@ import { PrismaClient } from '@prisma/client';
 import { FileUpload } from 'graphql-upload/processRequest.d.mts';
 import { z } from 'zod';
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: MyPayload;
+    }
+  }
+}
+
 interface User {
   id: number;
   email: string;
@@ -12,6 +20,14 @@ interface User {
 interface MyContext {
   prisma: PrismaClient;
   user?: User | null;
+}
+
+import { JwtPayload } from 'jsonwebtoken';
+
+interface MyPayload extends JwtPayload {
+  id: number;
+  email: string;
+  name: string;
 }
 
 const createUserSchema = z.object({

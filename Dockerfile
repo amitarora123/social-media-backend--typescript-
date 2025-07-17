@@ -1,4 +1,4 @@
-FROM node
+FROM node:22
 
 WORKDIR /app
 
@@ -8,4 +8,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+CMD ["sh", "-c", "npx prisma generate && npx prisma migrate reset --force && npx prisma migrate deploy && npm start"]
